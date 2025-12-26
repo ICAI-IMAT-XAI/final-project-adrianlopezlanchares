@@ -5,11 +5,11 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 class MLPModel(torch.nn.Module):
-    def __init__(self, input_dim: int, hidden_dim: List[int], output_dim: int):
+    def __init__(self, input_dim: int, hidden_dims: List[int], output_dim: int):
         super(MLPModel, self).__init__()
         layers = []
         prev_dim = input_dim
-        for h_dim in hidden_dim:
+        for h_dim in hidden_dims:
             layers.append(torch.nn.Linear(prev_dim, h_dim))
             layers.append(torch.nn.ReLU())
             prev_dim = h_dim
