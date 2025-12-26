@@ -27,5 +27,3 @@ def train_torch_model(
 
         epoch_loss = running_loss / len(train_loader.dataset)
         print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {epoch_loss:.4f}")
-
-    return model
