@@ -16,6 +16,9 @@ class MLPModel(torch.nn.Module):
         layers.append(torch.nn.Linear(prev_dim, output_dim))
         self.network = torch.nn.Sequential(*layers)
 
+    def forward(self, x):
+        return self.network(x)
+
 
 class LinearRegressionModel(torch.nn.Module):
     def __init__(self, input_dim: int, output_dim: int):
