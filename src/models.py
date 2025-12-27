@@ -27,7 +27,7 @@ class LinearRegressionModel(torch.nn.Module):
         self.linear = torch.nn.Linear(input_dim, output_dim)
 
     def forward(self, x):
-        return self.sigmoid(self.linear(x))
+        return self.linear(x)
 
 
 class RandomForestModel:
