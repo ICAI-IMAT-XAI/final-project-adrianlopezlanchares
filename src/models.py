@@ -14,6 +14,7 @@ class MLPModel(torch.nn.Module):
             layers.append(torch.nn.ReLU())
             prev_dim = h_dim
         layers.append(torch.nn.Linear(prev_dim, output_dim))
+        layers.append(torch.nn.Softmax(dim=1))
         self.network = torch.nn.Sequential(*layers)
 
     def forward(self, x):
@@ -24,9 +25,11 @@ class LinearRegressionModel(torch.nn.Module):
     def __init__(self, input_dim: int, output_dim: int):
         super(LinearRegressionModel, self).__init__()
         self.linear = torch.nn.Linear(input_dim, output_dim)
+        self.softmax = torch.nn.Softmax(dim=1)
 
     def forward(self, x):
-        return self.linear(x)
+        out = self.linear(x)
+        return self.softmax(out)
 
 
 class RandomForestModel:
