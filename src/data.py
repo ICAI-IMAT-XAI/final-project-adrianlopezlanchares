@@ -4,7 +4,7 @@ import torch
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 from torch.utils.data import Dataset
 
 
@@ -64,6 +64,16 @@ def build_preprocessor() -> ColumnTransformer:
         "metformin-rosiglitazone",
         "metformin-pioglitazone",
     ]
+    numeric_cols = [
+        "time_in_hospital",
+        "num_lab_procedures",
+        "num_procedures",
+        "num_medications",
+        "number_outpatient",
+        "number_emergency",
+        "number_inpatient",
+        "number_diagnoses",
+    ]
 
     # Define orders
     age_order = [
@@ -107,6 +117,7 @@ def build_preprocessor() -> ColumnTransformer:
 
     preprocessor = ColumnTransformer(
         transformers=[
+            ("num", StandardScaler(), numeric_cols),
             (
                 "ord",
                 ordinal_transformer,
@@ -128,7 +139,7 @@ def build_preprocessor() -> ColumnTransformer:
 class DiabetesDataset(Dataset):
     def __init__(self, X, y):
         self.X = torch.tensor(X, dtype=torch.float32)
-        self.y = torch.tensor(y, dtype=torch.float32)
+        self.y = torch.tensor(y, dtype=torch.long)
 
     def __len__(self):
         return len(self.y)
