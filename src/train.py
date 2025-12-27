@@ -9,8 +9,11 @@ def train_torch_model(
     optimizer,
     num_epochs: int = 10,
     device: str = "cpu",
-):
+) -> tuple[list[float], list[float]]:
     model.to(device)
+
+    train_losses = []
+    val_losses = []
 
     for epoch in range(num_epochs):
         running_loss = 0.0
@@ -27,6 +30,7 @@ def train_torch_model(
             running_loss += loss.item() * inputs.size(0)
 
         epoch_loss = running_loss / len(train_loader.dataset)
+        train_losses.append(epoch_loss)
         print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {epoch_loss:.4f}")
 
         model.eval()
@@ -39,4 +43,7 @@ def train_torch_model(
                 val_loss += loss.item() * inputs.size(0)
 
         val_loss /= len(val_loader.dataset)
+        val_losses.append(val_loss)
         print(f"Validation Loss: {val_loss:.4f}")
+
+    return train_losses, val_losses
