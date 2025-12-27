@@ -4,7 +4,7 @@ import torch
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 from torch.utils.data import Dataset
 
 
@@ -30,13 +30,11 @@ def build_preprocessor() -> ColumnTransformer:
     """
 
     # Define column types
-    ordinal_cols = ["age", "weight", "A1Cresult", "max_glu_serum"]
+    ordinal_cols = ["age", "A1Cresult", "max_glu_serum"]
     binary_cols = ["change", "diabetesMed"]
     categorical_cols = [
         "race",
         "gender",
-        "payer_code",
-        "medical_specialty",
         "diag_1",
         "diag_2",
         "diag_3",
@@ -64,16 +62,6 @@ def build_preprocessor() -> ColumnTransformer:
         "metformin-rosiglitazone",
         "metformin-pioglitazone",
     ]
-    numeric_cols = [
-        "time_in_hospital",
-        "num_lab_procedures",
-        "num_procedures",
-        "num_medications",
-        "number_outpatient",
-        "number_emergency",
-        "number_inpatient",
-        "number_diagnoses",
-    ]
 
     # Define orders
     age_order = [
@@ -88,18 +76,6 @@ def build_preprocessor() -> ColumnTransformer:
         "[80-90)",
         "[90-100)",
     ]
-    weight_order = [
-        "?",
-        "[0-25)",
-        "[25-50)",
-        "[50-75)",
-        "[75-100)",
-        "[100-125)",
-        "[125-150)",
-        "[150-175)",
-        "[175-200)",
-        ">200",
-    ]
     a1c_order = ["None", "Norm", ">7", ">8"]
     glu_order = ["None", "Norm", ">200", ">300"]
 
@@ -108,16 +84,13 @@ def build_preprocessor() -> ColumnTransformer:
             ("imputer", SimpleImputer(strategy="constant", fill_value="None")),
             (
                 "encoder",
-                OrdinalEncoder(
-                    categories=[age_order, weight_order, a1c_order, glu_order]
-                ),
+                OrdinalEncoder(categories=[age_order, a1c_order, glu_order]),
             ),
         ]
     )
 
     preprocessor = ColumnTransformer(
         transformers=[
-            ("num", StandardScaler(), numeric_cols),
             (
                 "ord",
                 ordinal_transformer,
