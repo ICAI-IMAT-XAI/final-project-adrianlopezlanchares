@@ -11,7 +11,6 @@ class MLPModel(torch.nn.Module):
         prev_dim = input_dim
         for h_dim in hidden_dims:
             layers.append(torch.nn.Linear(prev_dim, h_dim))
-            layers.append(torch.nn.BatchNorm1d(h_dim))
             layers.append(torch.nn.ReLU())
             layers.append(torch.nn.Dropout(p=0.5))
             prev_dim = h_dim
