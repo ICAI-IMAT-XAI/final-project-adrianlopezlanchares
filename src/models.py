@@ -34,7 +34,7 @@ class LinearRegressionModel(torch.nn.Module):
 class RandomForestModel:
     def __init__(self, n_estimators: int = 100, max_depth: int = None):
         self.model = RandomForestClassifier(
-            n_estimators=n_estimators, max_depth=max_depth
+            n_estimators=n_estimators, max_depth=max_depth, class_weight="balanced"
         )
 
     def fit(self, X, y):
