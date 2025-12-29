@@ -2,6 +2,10 @@ import os
 
 import torch
 from torch.utils.data import Dataset
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 
 
 def download_data() -> None:
